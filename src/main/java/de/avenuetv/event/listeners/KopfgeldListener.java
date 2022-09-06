@@ -26,30 +26,29 @@ public class KopfgeldListener implements Listener {
         Player p = e.getPlayer();
         if (p.getKiller() instanceof Player) {
             Player killer = p.getKiller();
-            if (Main.kopfgeldPlayers.contains(p)) {
-                int rewardCoins = 0;
-                KopfgeldPlayer kopfgeldPlayer = null;
-                for (KopfgeldPlayer kopfgeldPlayerFromList : Main.kopfgeldPlayers) {
-                    if (kopfgeldPlayerFromList.getWantedPlayer().equals(p)) {
-                        rewardCoins = kopfgeldPlayerFromList.getCoins();
-                        kopfgeldPlayer = kopfgeldPlayerFromList;
-                    }
+            int rewardCoins = 0;
+            KopfgeldPlayer kopfgeldPlayer = null;
+            for (KopfgeldPlayer kopfgeldPlayerFromList : Main.kopfgeldPlayers) {
+                if (kopfgeldPlayerFromList.getWantedPlayer().equals(p)) {
+                    rewardCoins = kopfgeldPlayerFromList.getCoins();
+                    kopfgeldPlayer = kopfgeldPlayerFromList;
                 }
-                Player firstHuntingPlayer = kopfgeldPlayer.getHuntingPlayers().get(0).getPlayer();
-                //Gebe rewardCoins an killer, muss noch eingefügt werden.
-                Main.kopfgeldPlayers.remove(firstHuntingPlayer);
-                Bukkit.broadcastMessage("§6§l"+killer.getName()+" §5hat §c§l"+p.getName()+" §5 eliminiert! Und hat ein Kopfgeld " +
-                        "in höhe von §a§l"+rewardCoins+" §5Coins erhalten.");
-                if (firstHuntingPlayer.isOnline()) {
-                    if (new ListGUI().inventoryHasSpace(firstHuntingPlayer.getInventory())) {
-                        firstHuntingPlayer.getInventory().addItem(new ListGUI().playerHead(p, false));
-                        p.updateInventory();
-                        firstHuntingPlayer.sendMessage("§aDer Kopf wurde dir ins Inventar gelegt.");
-                        return;
-                    }
-                }
-                Main.hunterWasNotOnline.put(firstHuntingPlayer, new ListGUI().playerHead(p, false));
             }
+            if (kopfgeldPlayer == null) return;
+            Player firstHuntingPlayer = kopfgeldPlayer.getHuntingPlayers().get(0).getPlayer();
+            //Gebe rewardCoins an killer, muss noch eingefügt werden.
+            Main.kopfgeldPlayers.remove(kopfgeldPlayer);
+            Bukkit.broadcastMessage("§6§l"+killer.getName()+" §5hat §c§l"+p.getName()+" §5 eliminiert! Und hat ein Kopfgeld " +
+                    "in höhe von §a§l"+rewardCoins+" §5Coins erhalten.");
+            if (firstHuntingPlayer.isOnline()) {
+                if (new ListGUI().inventoryHasSpace(firstHuntingPlayer.getInventory())) {
+                    firstHuntingPlayer.getInventory().addItem(new ListGUI().playerHead(p, false));
+                    p.updateInventory();
+                    firstHuntingPlayer.sendMessage("§aDer Kopf wurde dir ins Inventar gelegt.");
+                    return;
+                }
+            }
+            Main.hunterWasNotOnline.put(firstHuntingPlayer, new ListGUI().playerHead(p, false));
         }
     }
 
@@ -104,11 +103,14 @@ public class KopfgeldListener implements Listener {
                             if (buttonText.startsWith("§7Eröhe das Kopfgeld um§6 ")) {
                                 int amount = Integer.parseInt(buttonText.split(" ")[4]);
                                 KopfgeldPlayer kopfgeldPlayer = new KopfgeldPlayer((Player) lastClicked.get(p), new HuntingPlayer(p, amount));
+                                Main.kopfgeldPlayers.add(kopfgeldPlayer);
                                 p.closeInventory();
                                 if (kopfgeldPlayer.getHuntingPlayers().get(0).getPlayer().equals(p)) {
                                     p.sendMessage("§aDu hast ein Kopfgeld auf §5"+kopfgeldPlayer.getWantedPlayer().getName()+" §aausgesetzt.");
+                                    Bukkit.broadcastMessage("§6§l"+p.getName()+" §5hat ein Kopfgeld auf §c§l"+kopfgeldPlayer.getWantedPlayer().getName()+" §5ausgesetzt.");
                                 } else {
                                     p.sendMessage("§aDu hast das Kopfgeld auf §5"+kopfgeldPlayer.getWantedPlayer().getName()+" §aerhöht.");
+                                    Bukkit.broadcastMessage("§6§l"+p.getName()+" §5hat das Kopfgeld auf §c§l"+kopfgeldPlayer.getWantedPlayer().getName()+" §5erhöht.");
                                 }
                             }
                         }

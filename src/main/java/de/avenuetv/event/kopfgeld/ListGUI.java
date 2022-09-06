@@ -29,7 +29,7 @@ public class ListGUI {
         skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(player.getName()));
         skullMeta.setDisplayName("§7Kopf von§6 "+player.getName());
         if (isGUI) {
-            skull.setLore(getInfosForLore(player));
+            skullMeta.setLore(getInfosForLore(player));
         }
         skull.setItemMeta(skullMeta);
         return skull;
