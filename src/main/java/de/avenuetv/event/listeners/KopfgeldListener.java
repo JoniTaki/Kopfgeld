@@ -74,6 +74,7 @@ public class KopfgeldListener implements Listener {
                     String title = e.getView().getTitle().toString();
                     if (e.getCurrentItem() != null && !e.getCurrentItem().getType().equals(Material.AIR)) {
                         if (title.equalsIgnoreCase("Kopfgeld Menu")) {
+                            e.setCancelled(true);
                             /*
                             Wenn ein Player_Head geklickt wird, öffnet sich das Editing GUI
                             Dannach wird der geklickte Player auf lastClicked hinzugefügt.

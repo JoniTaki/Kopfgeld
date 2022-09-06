@@ -1,7 +1,9 @@
 package de.avenuetv.event.main;
 
 import de.avenuetv.event.event.*;
+import de.avenuetv.event.kopfgeld.Command;
 import de.avenuetv.event.listeners.EventListener;
+import de.avenuetv.event.listeners.KopfgeldListener;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -57,9 +59,11 @@ public class Main extends JavaPlugin {
 		getCommand("eventadmin").setExecutor(new EventAdmin());
 		getCommand("eventtoggleinv").setExecutor(new ToggleInventory());
 		getCommand("eventsetinv").setExecutor(new SetInventory());
+		getCommand("Kopfgeld").setExecutor(new Command());
 		
 		PluginManager pluginManager = Bukkit.getPluginManager();
 		pluginManager.registerEvents(new EventListener(), this);
+		pluginManager.registerEvents(new KopfgeldListener(), this);
 	}
 	
 	public void onDisable() {

@@ -40,3 +40,5 @@ commands:
     description: Entscheidet, ob die Spieler ihr Inventar fuer das Event behalten duerfen
   eventsetinv:
     description: Legt das Inventar der Spieler fuer das Event fest
+  kopfgeld:
+    description: Oeffne das Kopfgeld Menu
