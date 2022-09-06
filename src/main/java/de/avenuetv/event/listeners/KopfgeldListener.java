@@ -13,7 +13,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
@@ -23,37 +22,6 @@ import java.util.HashMap;
 public class KopfgeldListener implements Listener {
 
     private HashMap lastClicked = new HashMap<Player, Player>();
-
-    @EventHandler
-    public void onDeath(PlayerDeathEvent e){
-        Player p = e.getPlayer();
-        if (p.getKiller() instanceof Player) {
-            Player killer = p.getKiller();
-            int rewardCoins = 0;
-            KopfgeldPlayer kopfgeldPlayer = null;
-            for (KopfgeldPlayer kopfgeldPlayerFromList : Main.kopfgeldPlayers) {
-                if (kopfgeldPlayerFromList.getWantedPlayer().equals(p)) {
-                    rewardCoins = kopfgeldPlayerFromList.getCoins();
-                    kopfgeldPlayer = kopfgeldPlayerFromList;
-                }
-            }
-            if (kopfgeldPlayer == null) return;
-            Player firstHuntingPlayer = kopfgeldPlayer.getHuntingPlayers().get(0).getPlayer();
-            //Gebe rewardCoins an killer, muss noch eingefügt werden.
-            Main.kopfgeldPlayers.remove(kopfgeldPlayer);
-            Bukkit.broadcastMessage("§6§l"+killer.getName()+" §5hat §c§l"+p.getName()+" §5 eliminiert! Und hat ein Kopfgeld " +
-                    "in höhe von §a§l"+rewardCoins+" §5Coins erhalten.");
-            if (firstHuntingPlayer.isOnline()) {
-                if (new ListGUI().inventoryHasSpace(firstHuntingPlayer.getInventory())) {
-                    firstHuntingPlayer.getInventory().addItem(new ListGUI().playerHead(p, false));
-                    p.updateInventory();
-                    firstHuntingPlayer.sendMessage("§aDer Kopf wurde dir ins Inventar gelegt.");
-                    return;
-                }
-            }
-            Main.hunterWasNotOnline.put(firstHuntingPlayer, new ListGUI().playerHead(p, false));
-        }
-    }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
@@ -77,24 +45,9 @@ public class KopfgeldListener implements Listener {
                     if (e.getCurrentItem() != null && !e.getCurrentItem().getType().equals(Material.AIR)) {
                         if (title.equalsIgnoreCase("Kopfgeld Menu")) {
                             e.setCancelled(true);
-                            /*
-                            Wenn ein Player_Head geklickt wird, öffnet sich das Editing GUI
-                            Dannach wird der geklickte Player auf lastClicked hinzugefügt.
-                             */
                             if (e.getCurrentItem().getType().equals(Material.PLAYER_HEAD)) {
-                                String displayName = e.getCurrentItem().getItemMeta().getDisplayName().split(" ")[2];
-                                if (Bukkit.getPlayer(displayName).isOnline()) {
-                                    Player clickedPlayer = Bukkit.getPlayer(displayName);
-                                    lastClicked.put(p, clickedPlayer);
-                                    p.closeInventory();
-                                    new EditingGUI().openGUI(p);
-                                } else {
-                                    p.sendMessage("§aDer Spieler hat so eben den Server verlassen.");
-                                }
+                                clickHead(e.getCurrentItem(), p);
                             }
-                            /*
-                            Alle anderen Buttons werden hier geregelt.
-                             */
                             String buttonText = e.getCurrentItem().getItemMeta().getDisplayName();
                             if (buttonText.equalsIgnoreCase("§dZurück")) {
                                 p.closeInventory();
@@ -130,6 +83,18 @@ public class KopfgeldListener implements Listener {
             }
         } catch (PlayerHasNotEnoughCoinsException ex) {
             p.sendMessage("§aDu hast nicht genug Coins um ein Kopfgeld aus zu setzen.");
+        }
+    }
+
+    public void clickHead(ItemStack head, Player p) {
+        String displayName = head.getItemMeta().getDisplayName().split(" ")[2];
+        if (Bukkit.getPlayer(displayName).isOnline()) {
+            Player clickedPlayer = Bukkit.getPlayer(displayName);
+            lastClicked.put(p, clickedPlayer);
+            p.closeInventory();
+            new EditingGUI().openGUI(p);
+        } else {
+            p.sendMessage("§aDer Spieler hat so eben den Server verlassen.");
         }
     }
 }

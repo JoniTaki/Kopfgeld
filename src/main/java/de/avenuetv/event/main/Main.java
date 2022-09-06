@@ -2,6 +2,7 @@ package de.avenuetv.event.main;
 
 import de.avenuetv.event.event.*;
 import de.avenuetv.event.kopfgeld.Command;
+import de.avenuetv.event.listeners.DeathListener;
 import de.avenuetv.event.listeners.EventListener;
 import de.avenuetv.event.listeners.KopfgeldListener;
 import org.bukkit.Bukkit;
@@ -65,6 +66,7 @@ public class Main extends JavaPlugin {
 		PluginManager pluginManager = Bukkit.getPluginManager();
 		pluginManager.registerEvents(new EventListener(), this);
 		pluginManager.registerEvents(new KopfgeldListener(), this);
+		pluginManager.registerEvents(new DeathListener(), this);
 	}
 	
 	public void onDisable() {
