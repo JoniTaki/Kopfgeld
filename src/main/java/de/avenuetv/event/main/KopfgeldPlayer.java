@@ -13,6 +13,7 @@ public class KopfgeldPlayer {
         huntingPlayers = new ArrayList<>();
         this.wantedPlayer = wantedPlayer;
         this.addHunter(huntingPlayer);
+        Main.wantedPlayers.add(wantedPlayer);
     }
 
     public void addHunter(HuntingPlayer huntingPlayer){

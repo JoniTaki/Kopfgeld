@@ -20,7 +20,7 @@ public class Listener {
             }
             if (e.getDamager() instanceof Player) {
                 Player p = (Player)e.getDamager();
-                if(!Main.playerList.contains(p)) {
+                if(!Main.playerList.contains(p) || !Main.wantedPlayers.contains((Player)e.getEntity())) {
                     e.setCancelled(true);
                 }
             }
@@ -36,7 +36,7 @@ public class Listener {
             }
             if (projectile.getShooter() instanceof Player) {
                 Player p = (Player)projectile.getShooter();
-                if(!Main.playerList.contains(p)) {
+                if(!Main.playerList.contains(p) || !Main.wantedPlayers.contains((Player)e.getEntity())) {
                     e.setCancelled(true);
                 }
             }

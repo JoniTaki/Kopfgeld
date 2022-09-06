@@ -33,6 +33,7 @@ public class Main extends JavaPlugin {
 
 
 	public static List<KopfgeldPlayer> kopfgeldPlayers = new ArrayList<>();
+	public static List<Player> wantedPlayers = new ArrayList<>();
 	public static HashMap hunterWasNotOnline = new HashMap<Player, ItemStack>();
 	
 	public void onEnable() {

@@ -1,5 +1,8 @@
 package de.avenuetv.event.listeners;
 
+import Coinsystem.PlayerHasNotEnoughCoinsException;
+import Coinsystem.Selector;
+import Coinsystem.Spieler;
 import de.avenuetv.event.kopfgeld.EditingGUI;
 import de.avenuetv.event.kopfgeld.ListGUI;
 import de.avenuetv.event.main.HuntingPlayer;
@@ -65,7 +68,7 @@ public class KopfgeldListener implements Listener {
     }
 
     @EventHandler
-    public void onClick(InventoryClickEvent e){
+    public void onClick(InventoryClickEvent e) {
         if (e.getWhoClicked() instanceof Player) {
             Player p = (Player) e.getWhoClicked();
             if (e.getClickedInventory() != null) {
@@ -101,22 +104,32 @@ public class KopfgeldListener implements Listener {
                                 //Hier muss noch eine GUI zum zurückziehen der Kopfgelder aufgerufen werden.
                             }
                             if (buttonText.startsWith("§7Eröhe das Kopfgeld um§6 ")) {
-                                int amount = Integer.parseInt(buttonText.split(" ")[4]);
-                                KopfgeldPlayer kopfgeldPlayer = new KopfgeldPlayer((Player) lastClicked.get(p), new HuntingPlayer(p, amount));
-                                Main.kopfgeldPlayers.add(kopfgeldPlayer);
-                                p.closeInventory();
-                                if (kopfgeldPlayer.getHuntingPlayers().get(0).getPlayer().equals(p)) {
-                                    p.sendMessage("§aDu hast ein Kopfgeld auf §5"+kopfgeldPlayer.getWantedPlayer().getName()+" §aausgesetzt.");
-                                    Bukkit.broadcastMessage("§6§l"+p.getName()+" §5hat ein Kopfgeld auf §c§l"+kopfgeldPlayer.getWantedPlayer().getName()+" §5ausgesetzt.");
-                                } else {
-                                    p.sendMessage("§aDu hast das Kopfgeld auf §5"+kopfgeldPlayer.getWantedPlayer().getName()+" §aerhöht.");
-                                    Bukkit.broadcastMessage("§6§l"+p.getName()+" §5hat das Kopfgeld auf §c§l"+kopfgeldPlayer.getWantedPlayer().getName()+" §5erhöht.");
-                                }
+                                increaseKopfgeld(buttonText, p);
                             }
                         }
                     }
                 }
             }
+        }
+    }
+    public void increaseKopfgeld(String buttonText, Player p) {
+        int amount = Integer.parseInt(buttonText.split(" ")[4]);
+        KopfgeldPlayer kopfgeldPlayer = new KopfgeldPlayer((Player) lastClicked.get(p), new HuntingPlayer(p, amount));
+        Main.kopfgeldPlayers.add(kopfgeldPlayer);
+        p.closeInventory();
+        Spieler spieler = new Selector().selectSpieler(p.getName());
+        try {
+            spieler.removeCoins(amount);
+
+            if (kopfgeldPlayer.getHuntingPlayers().get(0).getPlayer().equals(p)) {
+                p.sendMessage("§aDu hast ein Kopfgeld auf §5"+kopfgeldPlayer.getWantedPlayer().getName()+" §aausgesetzt.");
+                Bukkit.broadcastMessage("§6§l"+p.getName()+" §5hat ein Kopfgeld auf §c§l"+kopfgeldPlayer.getWantedPlayer().getName()+" §5ausgesetzt.");
+            } else {
+                p.sendMessage("§aDu hast das Kopfgeld auf §5"+kopfgeldPlayer.getWantedPlayer().getName()+" §aerhöht.");
+                Bukkit.broadcastMessage("§6§l"+p.getName()+" §5hat das Kopfgeld auf §c§l"+kopfgeldPlayer.getWantedPlayer().getName()+" §5erhöht.");
+            }
+        } catch (PlayerHasNotEnoughCoinsException ex) {
+            p.sendMessage("§aDu hast nicht genug Coins um ein Kopfgeld aus zu setzen.");
         }
     }
 }
