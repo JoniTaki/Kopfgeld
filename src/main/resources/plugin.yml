@@ -1,0 +1,6 @@
+name: Event
+version: '${project.version}'
+main: kopfgeldbackup.event.Event
+api-version: 1.19
+authors: [ JoniTaki ]
+description: Backup from Kopfgeld
