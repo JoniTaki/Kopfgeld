@@ -1,6 +1,42 @@
-name: Event
-version: '${project.version}'
-main: kopfgeldbackup.event.Event
+name: EventUndKopfgeld
+version: '1'
+main: de.avenuetv.event.main.Main
 api-version: 1.19
-authors: [ JoniTaki ]
-description: Backup from Kopfgeld
+authors: [ AvenueTV ]
+description: Event + Kopfgeld
+
+commands:
+  eventopen:
+    description: Nach Ausfuehrung koennen Spieler dem Event beitreten (Du trittst dem Event automatisch als Event-Admin bei)
+  eventclose:
+    description: Nach Ausfuehrung koennen Spieler dem Event nicht mehr beitreten
+  eventjoin:
+    description: Trete dem aktuellen Event bei
+  eventleave:
+    description: Verlasse das aktuelle Event
+  eventsetspawn:
+    description: Setzt den Spawn, an den Spieler nach /eventjoin teleportiert werden, an deiner aktuellen Position
+  eventend:
+    description: Alle Spieler werden aus dem Event gekickt und an ihre alte Position teleportiert. Event-Spawns werden resettet
+  eventstart:
+    description: Event starten (Optional mit Countdown)(/eventclose wird ebenfalls ausgefuehrt)
+  eventkick:
+    description: Spieler wird aus dem Event gekickt und an seine alte Position teleportiert
+  eventlist:
+    description: Listet die Teilnehmer des Events auf
+  eventmsg:
+    description: Sendet eine Nachricht an alle Spieler, die dem Event zu diesem Zeitpunkt beigetreten sind
+  eventsetwatcherspawn:
+    description: Setzt den Spawn, an den Spieler nach /eventwatch teleportiert werden, an deiner aktuellen Position
+  eventwatch:
+    description: Schaue dem aktuelle Event zu
+  eventtogglepvp:
+    description: Aktiviert bzw. deaktiviert PvP
+  eventhealall:
+    description: Heilt alle Spieler, die dem Event zu diesem Zeitpunkt beigetreten sind
+  eventadmin:
+    description: Gibt oder entfernt einem Spieler oder dir selbst den Event-Admin-Status
+  eventtoggleinv:
+    description: Entscheidet, ob die Spieler ihr Inventar fuer das Event behalten duerfen
+  eventsetinv:
+    description: Legt das Inventar der Spieler fuer das Event fest
