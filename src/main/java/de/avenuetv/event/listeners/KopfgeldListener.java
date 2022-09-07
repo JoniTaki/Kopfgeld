@@ -3,6 +3,7 @@ package de.avenuetv.event.listeners;
 import Coinsystem.PlayerHasNotEnoughCoinsException;
 import Coinsystem.Selector;
 import Coinsystem.Spieler;
+import de.avenuetv.event.kopfgeld.CancelGUI;
 import de.avenuetv.event.kopfgeld.EditingGUI;
 import de.avenuetv.event.kopfgeld.ListGUI;
 import de.avenuetv.event.main.HuntingPlayer;
@@ -45,16 +46,24 @@ public class KopfgeldListener implements Listener {
                     if (e.getCurrentItem() != null && !e.getCurrentItem().getType().equals(Material.AIR)) {
                         if (title.equalsIgnoreCase("Kopfgeld Menu")) {
                             e.setCancelled(true);
-                            if (e.getCurrentItem().getType().equals(Material.PLAYER_HEAD)) {
+                            String buttonText = e.getCurrentItem().getItemMeta().getDisplayName();
+                            if (buttonText.startsWith("§7Kopfgeld von dir auf§b ")) {
+                                for (KopfgeldPlayer kopfgeldPlayer : Main.kopfgeldPlayers) {
+                                    if (kopfgeldPlayer.getWantedPlayerName().equalsIgnoreCase(buttonText.split(" ")[4])) {
+                                        kopfgeldPlayer.cancelHunting(kopfgeldPlayer.find(new HuntingPlayer(p)));
+                                        p.sendMessage("§aKopfgeld wurde zurück gezogen.");
+                                        p.closeInventory();
+                                    }
+                                }
+                            } else if (e.getCurrentItem().getType().equals(Material.PLAYER_HEAD)) {
                                 clickHead(e.getCurrentItem(), p);
                             }
-                            String buttonText = e.getCurrentItem().getItemMeta().getDisplayName();
                             if (buttonText.equalsIgnoreCase("§dZurück")) {
                                 p.closeInventory();
                                 new ListGUI().openGUI(p);
                             }
                             if (buttonText.equalsIgnoreCase("§cAlle meine ausgesetzten Kopfgelder")) {
-                                //Hier muss noch eine GUI zum zurückziehen der Kopfgelder aufgerufen werden.
+                                new CancelGUI().openGUI(p);
                             }
                             if (buttonText.startsWith("§7Eröhe das Kopfgeld um§6 ")) {
                                 increaseKopfgeld(buttonText, p);

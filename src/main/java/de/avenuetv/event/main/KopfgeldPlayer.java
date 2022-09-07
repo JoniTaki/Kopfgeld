@@ -2,25 +2,36 @@ package de.avenuetv.event.main;
 
 import Coinsystem.Selector;
 import Coinsystem.Spieler;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class KopfgeldPlayer {
-    private Player wantedPlayer;
+public class KopfgeldPlayer extends Main{
+    private OfflinePlayer wantedPlayer;
+    private String wantedPlayerName;
     private List<HuntingPlayer> huntingPlayers;
 
-    public KopfgeldPlayer (Player wantedPlayer, HuntingPlayer huntingPlayer){
+    public KopfgeldPlayer (OfflinePlayer wantedPlayer, HuntingPlayer huntingPlayer){
         huntingPlayers = new ArrayList<>();
         this.wantedPlayer = wantedPlayer;
         this.addHunter(huntingPlayer);
+        this.wantedPlayerName = wantedPlayer.getName();
         Main.wantedPlayers.add(wantedPlayer);
+        addToConfig();
+    }
+
+    //Wird genutzt wenn beim laden des Plugins alle HuntingPlayers aus der Config genommen werden.
+    public KopfgeldPlayer (OfflinePlayer wantedPlayer, List<HuntingPlayer> huntingPlayers) {
+        this.wantedPlayer = wantedPlayer;
+        this.huntingPlayers = huntingPlayers;
+        Main.kopfgeldPlayers.add(this);
+        addToConfig();
     }
 
     public void addHunter(HuntingPlayer huntingPlayer){
-        if (this.isInList(huntingPlayer)) {
-            this.find(huntingPlayer).addCoins(huntingPlayer.getCoins());
+        if (isInList(huntingPlayer)) {
+            find(huntingPlayer).addCoins(huntingPlayer.getCoins());
         } else {
             this.huntingPlayers.add(huntingPlayer);
         }
@@ -49,15 +60,34 @@ public class KopfgeldPlayer {
     }
 
     public void cancelHunting(HuntingPlayer huntingPlayer){
-        if(this.isInList(huntingPlayer)) {
+        if(isInList(huntingPlayer)) {
             Spieler spieler = new Selector().selectSpieler(huntingPlayer.getPlayer().getName());
             spieler.addCoins((int)(huntingPlayer.getCoins() * 0.75));
-            huntingPlayers.remove(this.find(huntingPlayer));
+            huntingPlayers.remove(find(huntingPlayer));
         }
     }
 
-    public Player getWantedPlayer() {
+    public void addToConfig() {
+        List<String> wantedPlayers = new ArrayList<>();
+        for (KopfgeldPlayer kopfgeldPlayer : kopfgeldPlayers) {
+            wantedPlayers.add(kopfgeldPlayer.getWantedPlayerName());
+        }
+        config.set("wantedPlayers", wantedPlayers);
+        List<String> huntingPlayers = new ArrayList<>();
+        for (HuntingPlayer huntingPlayer : this.huntingPlayers) {
+            huntingPlayers.add(huntingPlayer.getPlayer().getName());
+            config.set(huntingPlayer.getPlayer().getName(), wantedPlayerName);
+        }
+        config.set("huntersList."+wantedPlayerName, huntingPlayers);
+        saveConfig();
+    }
+
+    public OfflinePlayer getWantedPlayer() {
         return wantedPlayer;
+    }
+
+    public String getWantedPlayerName() {
+        return wantedPlayerName;
     }
 
     public List<HuntingPlayer> getHuntingPlayers() {

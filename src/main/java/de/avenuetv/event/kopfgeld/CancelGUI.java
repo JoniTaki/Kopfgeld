@@ -16,14 +16,16 @@ import java.util.List;
 public class CancelGUI {
 
     public void openGUI(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, 54, "Kopfgeld Menu");
+        Inventory inventory = Bukkit.createInventory(null, 27, "Kopfgeld Menu");
         for (KopfgeldPlayer kopfgeldPlayer : Main.kopfgeldPlayers) {
             for (HuntingPlayer huntingPlayer : kopfgeldPlayer.getHuntingPlayers()) {
                 if (huntingPlayer.getPlayer().equals(player)) {
                     ItemStack head = new ListGUI().playerHead(kopfgeldPlayer.getWantedPlayer(), false);
                     ItemMeta meta = head.getItemMeta();
+                    meta.setDisplayName("§7Kopfgeld von dir auf§b "+kopfgeldPlayer.getWantedPlayer().getName());
                     List<String> lore = new ArrayList<>();
                     lore.add("§eKopfgeld zurückziehen");
+                    lore.add("§7Du hast §a"+huntingPlayer.getCoins()+" §7Coins gesetzt");
                     lore.add("§7Erhalte 75% von deinen gesetzten Coins zurück");
                     meta.setLore(lore);
                     head.setItemMeta(meta);

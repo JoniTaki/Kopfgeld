@@ -1,12 +1,13 @@
 package de.avenuetv.event.main;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 public class HuntingPlayer {
-    private Player player;
+    private OfflinePlayer player;
     private int coins;
 
-    public HuntingPlayer (Player player, int coins) {
+    public HuntingPlayer (OfflinePlayer player, int coins) {
         this.player = player;
         this.coins = coins;
     }
@@ -19,7 +20,7 @@ public class HuntingPlayer {
         this.coins += coins;
     }
 
-    public Player getPlayer() {
+    public OfflinePlayer getPlayer() {
         return player;
     }
 

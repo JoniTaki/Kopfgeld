@@ -2,11 +2,14 @@ package de.avenuetv.event.main;
 
 import de.avenuetv.event.event.*;
 import de.avenuetv.event.kopfgeld.Command;
+import de.avenuetv.event.kopfgeld.KopfgeldLoader;
 import de.avenuetv.event.listeners.DeathListener;
 import de.avenuetv.event.listeners.EventListener;
 import de.avenuetv.event.listeners.KopfgeldListener;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
@@ -34,8 +37,9 @@ public class Main extends JavaPlugin {
 
 
 	public static List<KopfgeldPlayer> kopfgeldPlayers = new ArrayList<>();
-	public static List<Player> wantedPlayers = new ArrayList<>();
+	public static List<OfflinePlayer> wantedPlayers = new ArrayList<>();
 	public static HashMap hunterWasNotOnline = new HashMap<Player, ItemStack>();
+	public FileConfiguration config = getConfig();
 	
 	public void onEnable() {
 		plugin = this;
@@ -67,6 +71,7 @@ public class Main extends JavaPlugin {
 		pluginManager.registerEvents(new EventListener(), this);
 		pluginManager.registerEvents(new KopfgeldListener(), this);
 		pluginManager.registerEvents(new DeathListener(), this);
+		new KopfgeldLoader().load();
 	}
 	
 	public void onDisable() {

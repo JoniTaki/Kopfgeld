@@ -4,6 +4,7 @@ import de.avenuetv.event.main.KopfgeldPlayer;
 import de.avenuetv.event.main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -23,7 +24,7 @@ public class ListGUI {
         player.openInventory(inventory);
     }
 
-    public ItemStack playerHead(Player player, boolean isGUI) {
+    public ItemStack playerHead(OfflinePlayer player, boolean isGUI) {
         ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
         skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(player.getName()));
@@ -35,14 +36,14 @@ public class ListGUI {
         return skull;
     }
 
-    public List<String> getInfosForLore(Player player) {
+    public List<String> getInfosForLore(OfflinePlayer player) {
         List lore = new ArrayList<String>();
         for (KopfgeldPlayer kopfgeldPlayer : Main.kopfgeldPlayers) {
             if (kopfgeldPlayer.getWantedPlayer().equals(player)) {
                 if (kopfgeldPlayer.getCoins() > 0) {
                     lore.add("§6§lWANTED");
                     lore.add("§7Auf diesen Spieler ist ein Kopfgeld");
-                    lore.add("7in Höhe von §a§l"+kopfgeldPlayer.getCoins()+" §7ausgesetzt.");
+                    lore.add("§7in Höhe von §a§l"+kopfgeldPlayer.getCoins()+" §7ausgesetzt.");
                     lore.add("§7um das Kopfgeld zu erhöhen §bklick hier");
                     return lore;
                 }
