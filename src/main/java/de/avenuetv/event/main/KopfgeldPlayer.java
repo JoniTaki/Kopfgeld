@@ -69,7 +69,7 @@ public class KopfgeldPlayer extends Main{
 
     public void addToConfig() {
         List<String> wantedPlayers = new ArrayList<>();
-        for (KopfgeldPlayer kopfgeldPlayer : kopfgeldPlayers) {
+        for (KopfgeldPlayer kopfgeldPlayer : Main.kopfgeldPlayers) {
             wantedPlayers.add(kopfgeldPlayer.getWantedPlayerName());
         }
         config.set("wantedPlayers", wantedPlayers);

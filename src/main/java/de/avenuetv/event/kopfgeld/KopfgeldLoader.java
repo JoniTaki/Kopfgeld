@@ -8,9 +8,10 @@ import org.bukkit.Bukkit;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KopfgeldLoader extends Main {
+public class KopfgeldLoader extends Main{
 
-    public void load() {
+    @Override
+    public void onLoad() {
         List<String> alleKopfgelder = config.getStringList("wantedPlayers");
         for (String name : alleKopfgelder) {
             new KopfgeldPlayer(Bukkit.getOfflinePlayer(name), getHunters(name));

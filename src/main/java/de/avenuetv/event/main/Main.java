@@ -71,7 +71,6 @@ public class Main extends JavaPlugin {
 		pluginManager.registerEvents(new EventListener(), this);
 		pluginManager.registerEvents(new KopfgeldListener(), this);
 		pluginManager.registerEvents(new DeathListener(), this);
-		new KopfgeldLoader().load();
 	}
 	
 	public void onDisable() {
