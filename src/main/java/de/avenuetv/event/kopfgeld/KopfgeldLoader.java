@@ -16,7 +16,7 @@ public class KopfgeldLoader {
     public void load() {
         List<String> alleKopfgelder = config.getStringList("wantedPlayers");
         for (String name : alleKopfgelder) {
-            new KopfgeldPlayer(getHunters(name));
+            new KopfgeldPlayer(getHunters(name), name);
         }
     }
 

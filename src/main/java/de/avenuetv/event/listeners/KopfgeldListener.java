@@ -90,8 +90,8 @@ public class KopfgeldListener implements Listener {
                }
             } else {
                kopfgeldPlayer = new KopfgeldPlayer((Player) lastClicked.get(p), new HuntingPlayer(p.getName(), amount));
-               Main.kopfgeldPlayers.add(kopfgeldPlayer);
             }
+            Main.kopfgeldPlayers.add(kopfgeldPlayer);
             if (kopfgeldPlayer.getHuntingPlayers().get(0).getHuntingPlayerName().equals(p.getName())) {
                 p.sendMessage("§aDu hast ein Kopfgeld auf §5"+kopfgeldPlayer.getWantedPlayerName()+" §aausgesetzt.");
                 Bukkit.broadcastMessage("§6§l"+p.getName()+" §5hat ein Kopfgeld auf §c§l"+kopfgeldPlayer.getWantedPlayerName()+" §5ausgesetzt.");

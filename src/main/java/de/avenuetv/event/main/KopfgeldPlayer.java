@@ -22,10 +22,11 @@ public class KopfgeldPlayer extends KopfgeldLoader {
     }
 
     //Wird genutzt wenn beim laden des Plugins alle HuntingPlayers aus der Config genommen werden.
-    public KopfgeldPlayer (List<HuntingPlayer> huntingPlayers) {
+    public KopfgeldPlayer (List<HuntingPlayer> huntingPlayers, String wantedPlayerName) {
         this.huntingPlayers = huntingPlayers;
+        this.wantedPlayerName = wantedPlayerName;
         Main.kopfgeldPlayers.add(this);
-        Main.kopfgeldPlayersName.add(wantedPlayerName);
+        Main.kopfgeldPlayersName.add(this.wantedPlayerName);
         addToConfig();
     }
 
