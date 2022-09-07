@@ -61,7 +61,7 @@ public class Main extends JavaPlugin {
 		getCommand("eventadmin").setExecutor(new EventAdmin());
 		getCommand("eventtoggleinv").setExecutor(new ToggleInventory());
 		getCommand("eventsetinv").setExecutor(new SetInventory());
-		getCommand("Kopfgeld").setExecutor(new Command());
+		getCommand("kopfgeld").setExecutor(new Command());
 		
 		PluginManager pluginManager = Bukkit.getPluginManager();
 		pluginManager.registerEvents(new EventListener(), this);

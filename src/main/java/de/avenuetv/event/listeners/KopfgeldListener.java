@@ -67,13 +67,12 @@ public class KopfgeldListener implements Listener {
     }
     public void increaseKopfgeld(String buttonText, Player p) {
         int amount = Integer.parseInt(buttonText.split(" ")[4]);
-        KopfgeldPlayer kopfgeldPlayer = new KopfgeldPlayer((Player) lastClicked.get(p), new HuntingPlayer(p, amount));
-        Main.kopfgeldPlayers.add(kopfgeldPlayer);
         p.closeInventory();
         Spieler spieler = new Selector().selectSpieler(p.getName());
         try {
             spieler.removeCoins(amount);
-
+            KopfgeldPlayer kopfgeldPlayer = new KopfgeldPlayer((Player) lastClicked.get(p), new HuntingPlayer(p, amount));
+            Main.kopfgeldPlayers.add(kopfgeldPlayer);
             if (kopfgeldPlayer.getHuntingPlayers().get(0).getPlayer().equals(p)) {
                 p.sendMessage("§aDu hast ein Kopfgeld auf §5"+kopfgeldPlayer.getWantedPlayer().getName()+" §aausgesetzt.");
                 Bukkit.broadcastMessage("§6§l"+p.getName()+" §5hat ein Kopfgeld auf §c§l"+kopfgeldPlayer.getWantedPlayer().getName()+" §5ausgesetzt.");

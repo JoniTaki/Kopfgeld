@@ -1,5 +1,7 @@
 package de.avenuetv.event.main;
 
+import Coinsystem.Selector;
+import Coinsystem.Spieler;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -47,8 +49,9 @@ public class KopfgeldPlayer {
     }
 
     public void cancelHunting(HuntingPlayer huntingPlayer){
-        //Coins zurückgeben (75%)
         if(this.isInList(huntingPlayer)) {
+            Spieler spieler = new Selector().selectSpieler(huntingPlayer.getPlayer().getName());
+            spieler.addCoins((int)(huntingPlayer.getCoins() * 0.75));
             huntingPlayers.remove(this.find(huntingPlayer));
         }
     }
