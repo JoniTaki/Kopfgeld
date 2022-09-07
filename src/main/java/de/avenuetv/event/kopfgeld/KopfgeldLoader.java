@@ -4,14 +4,16 @@ import de.avenuetv.event.main.HuntingPlayer;
 import de.avenuetv.event.main.KopfgeldPlayer;
 import de.avenuetv.event.main.Main;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class KopfgeldLoader extends Main{
+public class KopfgeldLoader {
 
-    @Override
-    public void onLoad() {
+    public FileConfiguration config = Main.getPlugin().getConfig();
+
+    public void load() {
         List<String> alleKopfgelder = config.getStringList("wantedPlayers");
         for (String name : alleKopfgelder) {
             new KopfgeldPlayer(Bukkit.getOfflinePlayer(name), getHunters(name));

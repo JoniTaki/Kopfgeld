@@ -39,7 +39,6 @@ public class Main extends JavaPlugin {
 	public static List<KopfgeldPlayer> kopfgeldPlayers = new ArrayList<>();
 	public static List<OfflinePlayer> wantedPlayers = new ArrayList<>();
 	public static HashMap hunterWasNotOnline = new HashMap<Player, ItemStack>();
-	public FileConfiguration config = getConfig();
 	
 	public void onEnable() {
 		plugin = this;

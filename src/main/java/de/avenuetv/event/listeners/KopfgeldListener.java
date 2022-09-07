@@ -65,7 +65,7 @@ public class KopfgeldListener implements Listener {
                             if (buttonText.equalsIgnoreCase("§cAlle meine ausgesetzten Kopfgelder")) {
                                 new CancelGUI().openGUI(p);
                             }
-                            if (buttonText.startsWith("§7Eröhe das Kopfgeld um§6 ")) {
+                            if (buttonText.startsWith("§7Erhöhe das Kopfgeld um§6 ")) {
                                 increaseKopfgeld(buttonText, p);
                             }
                         }

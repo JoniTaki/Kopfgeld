@@ -2,12 +2,13 @@ package de.avenuetv.event.main;
 
 import Coinsystem.Selector;
 import Coinsystem.Spieler;
+import de.avenuetv.event.kopfgeld.KopfgeldLoader;
 import org.bukkit.OfflinePlayer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class KopfgeldPlayer extends Main{
+public class KopfgeldPlayer extends KopfgeldLoader {
     private OfflinePlayer wantedPlayer;
     private String wantedPlayerName;
     private List<HuntingPlayer> huntingPlayers;
@@ -79,7 +80,7 @@ public class KopfgeldPlayer extends Main{
             config.set(huntingPlayer.getPlayer().getName(), wantedPlayerName);
         }
         config.set("huntersList."+wantedPlayerName, huntingPlayers);
-        saveConfig();
+        Main.getPlugin().saveConfig();
     }
 
     public OfflinePlayer getWantedPlayer() {
