@@ -42,3 +42,6 @@ commands:
     description: Legt das Inventar der Spieler fuer das Event fest
   kopfgeld:
     description: Oeffne das Kopfgeld Menu
+
+depend:
+  - CoinAPI
