@@ -21,7 +21,7 @@ public class EditingGUI {
         Inventory inventory = Bukkit.createInventory(null, 27, "Kopfgeld Menu");
         int coinsAmount = 25000;
         for (int i = 11; i < 15; i++) {
-            String displayName = "§7Eröhe das Kopfgeld um§6 "+coinsAmount+" §7Coins.";
+            String displayName = "§7Erhöhe das Kopfgeld um§6 "+coinsAmount+" §7Coins.";
             inventory.setItem(i, customItemStack(displayName, Material.GOLD_INGOT));
             coinsAmount *= 2;
         }

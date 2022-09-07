@@ -17,13 +17,15 @@ public class KopfgeldPlayer extends KopfgeldLoader {
         this.addHunter(huntingPlayer);
         this.wantedPlayerName = wantedPlayer.getName();
         Main.wantedPlayers.add(wantedPlayer);
+        Main.kopfgeldPlayersName.add(wantedPlayer.getName());
         addToConfig();
     }
 
     //Wird genutzt wenn beim laden des Plugins alle HuntingPlayers aus der Config genommen werden.
-    public KopfgeldPlayer (OfflinePlayer wantedPlayer, List<HuntingPlayer> huntingPlayers) {
+    public KopfgeldPlayer (List<HuntingPlayer> huntingPlayers) {
         this.huntingPlayers = huntingPlayers;
         Main.kopfgeldPlayers.add(this);
+        Main.kopfgeldPlayersName.add(wantedPlayerName);
         addToConfig();
     }
 
