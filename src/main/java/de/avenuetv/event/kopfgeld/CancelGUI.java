@@ -19,10 +19,10 @@ public class CancelGUI {
         Inventory inventory = Bukkit.createInventory(null, 27, "Kopfgeld Menu");
         for (KopfgeldPlayer kopfgeldPlayer : Main.kopfgeldPlayers) {
             for (HuntingPlayer huntingPlayer : kopfgeldPlayer.getHuntingPlayers()) {
-                if (huntingPlayer.getPlayer().equals(player)) {
-                    ItemStack head = new ListGUI().playerHead(kopfgeldPlayer.getWantedPlayer(), false);
+                if (huntingPlayer.getHuntingPlayerName().equals(player.getName())) {
+                    ItemStack head = new ListGUI().playerHead(Bukkit.getPlayer(kopfgeldPlayer.getWantedPlayerName()), false);
                     ItemMeta meta = head.getItemMeta();
-                    meta.setDisplayName("§7Kopfgeld von dir auf§b "+kopfgeldPlayer.getWantedPlayer().getName());
+                    meta.setDisplayName("§7Kopfgeld von dir auf§b "+kopfgeldPlayer.getWantedPlayerName());
                     List<String> lore = new ArrayList<>();
                     lore.add("§eKopfgeld zurückziehen");
                     lore.add("§7Du hast §a"+huntingPlayer.getCoins()+" §7Coins gesetzt");

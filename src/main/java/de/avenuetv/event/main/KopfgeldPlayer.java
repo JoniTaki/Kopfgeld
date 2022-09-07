@@ -9,13 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class KopfgeldPlayer extends KopfgeldLoader {
-    private OfflinePlayer wantedPlayer;
     private String wantedPlayerName;
     private List<HuntingPlayer> huntingPlayers;
 
     public KopfgeldPlayer (OfflinePlayer wantedPlayer, HuntingPlayer huntingPlayer){
         huntingPlayers = new ArrayList<>();
-        this.wantedPlayer = wantedPlayer;
         this.addHunter(huntingPlayer);
         this.wantedPlayerName = wantedPlayer.getName();
         Main.wantedPlayers.add(wantedPlayer);
@@ -24,7 +22,6 @@ public class KopfgeldPlayer extends KopfgeldLoader {
 
     //Wird genutzt wenn beim laden des Plugins alle HuntingPlayers aus der Config genommen werden.
     public KopfgeldPlayer (OfflinePlayer wantedPlayer, List<HuntingPlayer> huntingPlayers) {
-        this.wantedPlayer = wantedPlayer;
         this.huntingPlayers = huntingPlayers;
         Main.kopfgeldPlayers.add(this);
         addToConfig();
@@ -40,19 +37,19 @@ public class KopfgeldPlayer extends KopfgeldLoader {
 
     public HuntingPlayer find (HuntingPlayer player){
         if(huntingPlayers != null && huntingPlayers.size() > 0) {
-            for (HuntingPlayer p : huntingPlayers){
-                if(p.getPlayer().equals(player.getPlayer())){
-                    return p;
+            for (HuntingPlayer huntingPlayer : huntingPlayers){
+                if(huntingPlayer.getHuntingPlayerName().equals(player.getHuntingPlayerName())){
+                    return huntingPlayer;
                 }
             }
         }
         return null;
     }
 
-    public boolean isInList(HuntingPlayer huntingPlayer){
+    public boolean isInList(HuntingPlayer player){
         if(huntingPlayers != null && huntingPlayers.size() > 0) {
-            for (HuntingPlayer p : huntingPlayers){
-                if(p.getPlayer().equals(huntingPlayer.getPlayer())){
+            for (HuntingPlayer huntingPlayer : huntingPlayers){
+                if(huntingPlayer.getHuntingPlayerName().equals(player.getHuntingPlayerName())){
                     return true;
                 }
             }
@@ -62,7 +59,7 @@ public class KopfgeldPlayer extends KopfgeldLoader {
 
     public void cancelHunting(HuntingPlayer huntingPlayer){
         if(isInList(huntingPlayer)) {
-            Spieler spieler = new Selector().selectSpieler(huntingPlayer.getPlayer().getName());
+            Spieler spieler = new Selector().selectSpieler(huntingPlayer.getHuntingPlayerName());
             spieler.addCoins((int)(huntingPlayer.getCoins() * 0.75));
             huntingPlayers.remove(find(huntingPlayer));
         }
@@ -76,15 +73,11 @@ public class KopfgeldPlayer extends KopfgeldLoader {
         config.set("wantedPlayers", wantedPlayers);
         List<String> huntingPlayers = new ArrayList<>();
         for (HuntingPlayer huntingPlayer : this.huntingPlayers) {
-            huntingPlayers.add(huntingPlayer.getPlayer().getName());
-            config.set(huntingPlayer.getPlayer().getName(), wantedPlayerName);
+            huntingPlayers.add(huntingPlayer.getHuntingPlayerName());
+            config.set(huntingPlayer.getHuntingPlayerName(), wantedPlayerName);
         }
         config.set("huntersList."+wantedPlayerName, huntingPlayers);
         Main.getPlugin().saveConfig();
-    }
-
-    public OfflinePlayer getWantedPlayer() {
-        return wantedPlayer;
     }
 
     public String getWantedPlayerName() {

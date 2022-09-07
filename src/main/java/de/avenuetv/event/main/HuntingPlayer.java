@@ -4,24 +4,27 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 public class HuntingPlayer {
-    private OfflinePlayer player;
+    private String huntingPlayerName;
     private int coins;
 
-    public HuntingPlayer (OfflinePlayer player, int coins) {
-        this.player = player;
+    public HuntingPlayer (String huntingPlayerName, int coins) {
         this.coins = coins;
+        this.huntingPlayerName = huntingPlayerName;
+    }
+    public HuntingPlayer (String huntingPlayerName) {
+        this.huntingPlayerName = huntingPlayerName;
     }
 
-    public HuntingPlayer (Player player) {
-        this.player = player;
+    public String getHuntingPlayerName() {
+        return huntingPlayerName;
+    }
+
+    public void setHuntingPlayerName(String huntingPlayerName) {
+        this.huntingPlayerName = huntingPlayerName;
     }
 
     public void addCoins (int coins){
         this.coins += coins;
-    }
-
-    public OfflinePlayer getPlayer() {
-        return player;
     }
 
     public int getCoins() {

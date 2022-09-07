@@ -24,7 +24,7 @@ public class KopfgeldLoader {
         List<HuntingPlayer> huntingPlayers = new ArrayList<>();
         List<String> names = config.getStringList("huntersList."+wantedName);
         for (String hunterName : names) {
-            new HuntingPlayer(Bukkit.getOfflinePlayer(hunterName), getCoins(hunterName, wantedName));
+            new HuntingPlayer(hunterName, getCoins(hunterName, wantedName));
         }
         return huntingPlayers;
     }

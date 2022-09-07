@@ -39,7 +39,7 @@ public class ListGUI {
     public List<String> getInfosForLore(OfflinePlayer player) {
         List lore = new ArrayList<String>();
         for (KopfgeldPlayer kopfgeldPlayer : Main.kopfgeldPlayers) {
-            if (kopfgeldPlayer.getWantedPlayer().equals(player)) {
+            if (kopfgeldPlayer.getWantedPlayerName().equals(player.getName())) {
                 if (kopfgeldPlayer.getCoins() > 0) {
                     lore.add("§6§lWANTED");
                     lore.add("§7Auf diesen Spieler ist ein Kopfgeld");

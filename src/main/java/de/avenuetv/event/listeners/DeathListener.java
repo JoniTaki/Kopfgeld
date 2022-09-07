@@ -22,13 +22,13 @@ public class DeathListener implements Listener {
             int rewardCoins = 0;
             KopfgeldPlayer kopfgeldPlayer = null;
             for (KopfgeldPlayer kopfgeldPlayerFromList : Main.kopfgeldPlayers) {
-                if (kopfgeldPlayerFromList.getWantedPlayer().equals(p)) {
+                if (kopfgeldPlayerFromList.getWantedPlayerName().equals(p.getName())) {
                     rewardCoins = kopfgeldPlayerFromList.getCoins();
                     kopfgeldPlayer = kopfgeldPlayerFromList;
                 }
             }
             if (kopfgeldPlayer == null) return;
-            OfflinePlayer firstHuntingPlayer = kopfgeldPlayer.getHuntingPlayers().get(0).getPlayer();
+            OfflinePlayer firstHuntingPlayer = Bukkit.getOfflinePlayer(kopfgeldPlayer.getHuntingPlayers().get(0).getHuntingPlayerName());
             Spieler spielerWhoKilled = new Selector().selectSpieler(killer.getName());
             spielerWhoKilled.addCoins(rewardCoins);
             Main.kopfgeldPlayers.remove(kopfgeldPlayer);
