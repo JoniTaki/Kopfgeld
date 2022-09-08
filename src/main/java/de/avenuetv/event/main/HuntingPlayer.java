@@ -1,13 +1,11 @@
 package de.avenuetv.event.main;
 
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
-
 public class HuntingPlayer {
     private String huntingPlayerName;
     private int coins;
 
     public HuntingPlayer (String huntingPlayerName, int coins) {
+        System.out.println(coins);
         this.coins = coins;
         this.huntingPlayerName = huntingPlayerName;
     }

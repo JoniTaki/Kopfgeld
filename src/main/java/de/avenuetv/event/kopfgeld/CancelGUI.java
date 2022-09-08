@@ -20,7 +20,7 @@ public class CancelGUI {
         for (KopfgeldPlayer kopfgeldPlayer : Main.kopfgeldPlayers) {
             for (HuntingPlayer huntingPlayer : kopfgeldPlayer.getHuntingPlayers()) {
                 if (huntingPlayer.getHuntingPlayerName().equals(player.getName())) {
-                    ItemStack head = new ListGUI().playerHead(Bukkit.getPlayer(kopfgeldPlayer.getWantedPlayerName()), false);
+                    ItemStack head = new ListGUI().playerHead(kopfgeldPlayer.getWantedPlayerName(), false);
                     ItemMeta meta = head.getItemMeta();
                     meta.setDisplayName("§7Kopfgeld von dir auf§b "+kopfgeldPlayer.getWantedPlayerName());
                     List<String> lore = new ArrayList<>();

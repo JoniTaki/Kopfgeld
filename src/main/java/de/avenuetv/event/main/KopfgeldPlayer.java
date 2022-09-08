@@ -3,6 +3,7 @@ package de.avenuetv.event.main;
 import Coinsystem.Selector;
 import Coinsystem.Spieler;
 import de.avenuetv.event.kopfgeld.KopfgeldLoader;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 import java.util.ArrayList;
@@ -14,28 +15,30 @@ public class KopfgeldPlayer extends KopfgeldLoader {
 
     public KopfgeldPlayer (OfflinePlayer wantedPlayer, HuntingPlayer huntingPlayer){
         huntingPlayers = new ArrayList<>();
-        this.addHunter(huntingPlayer);
-        this.wantedPlayerName = wantedPlayer.getName();
+        addHunter(huntingPlayer);
+        wantedPlayerName = wantedPlayer.getName();
         Main.wantedPlayers.add(wantedPlayer);
         Main.kopfgeldPlayersName.add(wantedPlayer.getName());
-        addToConfig();
+        Main.kopfgeldPlayers.add(this);
+        addToDatabase();
     }
 
     //Wird genutzt wenn beim laden des Plugins alle HuntingPlayers aus der Config genommen werden.
     public KopfgeldPlayer (List<HuntingPlayer> huntingPlayers, String wantedPlayerName) {
         this.huntingPlayers = huntingPlayers;
         this.wantedPlayerName = wantedPlayerName;
+        Main.wantedPlayers.add(Bukkit.getOfflinePlayer(wantedPlayerName));
+        Main.kopfgeldPlayersName.add(wantedPlayerName);
         Main.kopfgeldPlayers.add(this);
-        Main.kopfgeldPlayersName.add(this.wantedPlayerName);
-        addToConfig();
     }
 
     public void addHunter(HuntingPlayer huntingPlayer){
         if (isInList(huntingPlayer)) {
             find(huntingPlayer).addCoins(huntingPlayer.getCoins());
         } else {
-            this.huntingPlayers.add(huntingPlayer);
+            huntingPlayers.add(huntingPlayer);
         }
+        addToDatabase();
     }
 
     public HuntingPlayer find (HuntingPlayer player){
@@ -65,22 +68,23 @@ public class KopfgeldPlayer extends KopfgeldLoader {
             Spieler spieler = new Selector().selectSpieler(huntingPlayer.getHuntingPlayerName());
             spieler.addCoins((int)(huntingPlayer.getCoins() * 0.75));
             huntingPlayers.remove(find(huntingPlayer));
+            Main.database.setData("DELETE FROM `Kopfgelder` WHERE `wantedPlayer` = '"+wantedPlayerName+"' AND `huntingPlayer` = '"+huntingPlayer.getHuntingPlayerName()+"'");
         }
     }
 
-    public void addToConfig() {
-        List<String> wantedPlayers = new ArrayList<>();
-        for (KopfgeldPlayer kopfgeldPlayer : Main.kopfgeldPlayers) {
-            wantedPlayers.add(kopfgeldPlayer.getWantedPlayerName());
+    public List<String> getHuntingPlayersName() {
+        List<String> list = new ArrayList<>();
+        for (HuntingPlayer huntingPlayer : huntingPlayers) {
+            list.add(huntingPlayer.getHuntingPlayerName());
         }
-        config.set("wantedPlayers", wantedPlayers);
-        List<String> huntingPlayers = new ArrayList<>();
-        for (HuntingPlayer huntingPlayer : this.huntingPlayers) {
-            huntingPlayers.add(huntingPlayer.getHuntingPlayerName());
-            config.set(huntingPlayer.getHuntingPlayerName(), wantedPlayerName);
+        return list;
+    }
+
+    public void addToDatabase() {
+        Main.database.setData("DELETE FROM `Kopfgelder` WHERE `wantedPlayer` = '"+wantedPlayerName+"'");
+        for (HuntingPlayer huntingPlayer : huntingPlayers) {
+            Main.database.setData("INSERT INTO `Kopfgelder`(`wantedPlayer`, `huntingPlayer`, `Coins`) VALUES ('"+wantedPlayerName+"','"+huntingPlayer.getHuntingPlayerName()+"','"+huntingPlayer.getCoins()+"')");
         }
-        config.set("huntersList."+wantedPlayerName, huntingPlayers);
-        Main.getPlugin().saveConfig();
     }
 
     public String getWantedPlayerName() {

@@ -6,7 +6,7 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-public class Listener {
+public class Listener implements org.bukkit.event.Listener {
 
     @EventHandler
     public void onPvP(EntityDamageByEntityEvent e) {
@@ -20,7 +20,7 @@ public class Listener {
             }
             if (e.getDamager() instanceof Player) {
                 Player p = (Player)e.getDamager();
-                if(!Main.playerList.contains(p) || !Main.wantedPlayers.contains((Player)e.getEntity())) {
+                if(!Main.playerList.contains(p) || !Main.kopfgeldPlayersName.contains(e.getEntity().getName())) {
                     e.setCancelled(true);
                 }
             }
@@ -36,7 +36,7 @@ public class Listener {
             }
             if (projectile.getShooter() instanceof Player) {
                 Player p = (Player)projectile.getShooter();
-                if(!Main.playerList.contains(p) || !Main.wantedPlayers.contains((Player)e.getEntity())) {
+                if(!Main.playerList.contains(p) || !Main.kopfgeldPlayersName.contains(e.getEntity().getName())) {
                     e.setCancelled(true);
                 }
             }

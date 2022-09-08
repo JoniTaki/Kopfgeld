@@ -11,10 +11,8 @@ import java.util.List;
 
 public class KopfgeldLoader {
 
-    public FileConfiguration config = Main.getPlugin().getConfig();
-
     public void load() {
-        List<String> alleKopfgelder = config.getStringList("wantedPlayers");
+        List<String> alleKopfgelder = Main.database.getListWithoutSpecs("wantedPlayer");
         for (String name : alleKopfgelder) {
             new KopfgeldPlayer(getHunters(name), name);
         }
@@ -22,15 +20,16 @@ public class KopfgeldLoader {
 
     public List<HuntingPlayer> getHunters(String wantedName) {
         List<HuntingPlayer> huntingPlayers = new ArrayList<>();
-        List<String> names = config.getStringList("huntersList."+wantedName);
+        List<String> names = Main.database.getListWithSpecs("huntingPlayer", "wantedPlayer", wantedName);
         for (String hunterName : names) {
-            new HuntingPlayer(hunterName, getCoins(hunterName, wantedName));
+            HuntingPlayer huntingPlayer = new HuntingPlayer(hunterName, getCoins(hunterName, wantedName));
+            huntingPlayers.add(huntingPlayer);
         }
         return huntingPlayers;
     }
 
     public int getCoins(String hunterName, String wantedName) {
-        return config.getInt(hunterName+"."+wantedName);
+        return Main.database.getInt("Coins", wantedName, hunterName);
     }
 
 }

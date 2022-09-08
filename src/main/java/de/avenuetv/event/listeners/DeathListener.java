@@ -19,6 +19,7 @@ public class DeathListener implements Listener {
         Player p = e.getPlayer();
         if (p.getKiller() instanceof Player) {
             Player killer = p.getKiller();
+            if (killer.getName().equalsIgnoreCase(p.getName())) return;
             int rewardCoins = 0;
             KopfgeldPlayer kopfgeldPlayer = null;
             for (KopfgeldPlayer kopfgeldPlayerFromList : Main.kopfgeldPlayers) {
@@ -37,13 +38,13 @@ public class DeathListener implements Listener {
             if (firstHuntingPlayer.isOnline()) {
                 Player onlineHuntingPlayer = (Player) firstHuntingPlayer;
                 if (new ListGUI().inventoryHasSpace(onlineHuntingPlayer.getInventory())) {
-                    onlineHuntingPlayer.getInventory().addItem(new ListGUI().playerHead(p, false));
+                    onlineHuntingPlayer.getInventory().addItem(new ListGUI().playerHead(p.getName(), false));
                     p.updateInventory();
                     onlineHuntingPlayer.sendMessage("§aDer Kopf wurde dir ins Inventar gelegt.");
                     return;
                 }
             }
-            Main.hunterWasNotOnline.put(firstHuntingPlayer, new ListGUI().playerHead(p, false));
+            Main.hunterWasNotOnline.put(firstHuntingPlayer, new ListGUI().playerHead(p.getName(), false));
         }
     }
 }

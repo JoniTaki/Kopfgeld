@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -44,6 +45,7 @@ public class KopfgeldListener implements Listener {
                 if (e.getView().getTitle() != null) {
                     String title = e.getView().getTitle().toString();
                     if (e.getCurrentItem() != null && !e.getCurrentItem().getType().equals(Material.AIR)) {
+                        if (!e.getClickedInventory().getType().equals(InventoryType.CHEST)) return;
                         if (title.equalsIgnoreCase("Kopfgeld Menu")) {
                             e.setCancelled(true);
                             String buttonText = e.getCurrentItem().getItemMeta().getDisplayName();
@@ -86,12 +88,12 @@ public class KopfgeldListener implements Listener {
                for (KopfgeldPlayer fromList : Main.kopfgeldPlayers) {
                    if (fromList.getWantedPlayerName().equalsIgnoreCase(clicked.getName())) {
                        kopfgeldPlayer = fromList;
+                       kopfgeldPlayer.addHunter(new HuntingPlayer(p.getName(), amount));
                    }
                }
             } else {
                kopfgeldPlayer = new KopfgeldPlayer((Player) lastClicked.get(p), new HuntingPlayer(p.getName(), amount));
             }
-            Main.kopfgeldPlayers.add(kopfgeldPlayer);
             if (kopfgeldPlayer.getHuntingPlayers().get(0).getHuntingPlayerName().equals(p.getName())) {
                 p.sendMessage("§aDu hast ein Kopfgeld auf §5"+kopfgeldPlayer.getWantedPlayerName()+" §aausgesetzt.");
                 Bukkit.broadcastMessage("§6§l"+p.getName()+" §5hat ein Kopfgeld auf §c§l"+kopfgeldPlayer.getWantedPlayerName()+" §5ausgesetzt.");

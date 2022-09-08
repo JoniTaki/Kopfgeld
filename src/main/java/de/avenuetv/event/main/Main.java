@@ -6,6 +6,7 @@ import de.avenuetv.event.kopfgeld.KopfgeldLoader;
 import de.avenuetv.event.listeners.DeathListener;
 import de.avenuetv.event.listeners.EventListener;
 import de.avenuetv.event.listeners.KopfgeldListener;
+import de.avenuetv.event.listeners.Listener;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -40,6 +41,8 @@ public class Main extends JavaPlugin {
 	public static List<String> kopfgeldPlayersName = new ArrayList<>();
 	public static List<OfflinePlayer> wantedPlayers = new ArrayList<>();
 	public static HashMap hunterWasNotOnline = new HashMap<Player, ItemStack>();
+
+	public static Database database = new Database();
 	
 	public void onEnable() {
 		plugin = this;
@@ -47,6 +50,9 @@ public class Main extends JavaPlugin {
 		ispvp = false;
 		isStarted = false;
 		isInventory = false;
+
+		database.connect();
+		database.createTable();
 		
 		getCommand("eventopen").setExecutor(new OpenEvent());
 		getCommand("eventclose").setExecutor(new CloseEvent());
@@ -71,7 +77,9 @@ public class Main extends JavaPlugin {
 		pluginManager.registerEvents(new EventListener(), this);
 		pluginManager.registerEvents(new KopfgeldListener(), this);
 		pluginManager.registerEvents(new DeathListener(), this);
+		pluginManager.registerEvents(new Listener(), this);
 		new KopfgeldLoader().load();
+		System.out.println(kopfgeldPlayersName);
 	}
 	
 	public void onDisable() {
